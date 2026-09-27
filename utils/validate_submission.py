@@ -235,6 +235,7 @@ def validate(matching_path, candidate_path, test_dir, check_ids=False):
             "your submission."
         )
 
+    print(f"  reading and validating {os.path.basename(matching_path)}...", flush=True)
     matched = validate_id_list_file(
         matching_path, MATCHING_HEADER, "matched_entity_ids", required, valid_ids, errors
     )
@@ -244,6 +245,7 @@ def validate(matching_path, candidate_path, test_dir, check_ids=False):
     # candidate file never fails this run on its own.
     candidate = None
     if candidate_path and os.path.isfile(candidate_path):
+        print(f"  reading and validating {os.path.basename(candidate_path)}...", flush=True)
         candidate = validate_id_list_file(
             candidate_path, CANDIDATE_HEADER, "candidate_entity_ids",
             required, valid_ids, errors,
