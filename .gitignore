@@ -25,6 +25,11 @@ Thumbs.db
 
 # Generated outputs
 output/*
+*.tsv
+*.csv
+*.parquet
+*.zip
+*.tar.gz
 
 # Local datasets
 dataset/
