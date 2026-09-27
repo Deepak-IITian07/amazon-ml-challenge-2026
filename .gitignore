@@ -23,13 +23,5 @@ Thumbs.db
 # Environment / secrets
 .env
 
-# Generated outputs
-output/*
-*.tsv
-*.csv
-*.parquet
-*.zip
-*.tar.gz
-
 # Local datasets
 dataset/
