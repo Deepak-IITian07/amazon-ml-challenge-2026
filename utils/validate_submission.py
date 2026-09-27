@@ -310,11 +310,52 @@ def main():
     # validate() skip (with a warning) if the file isn't there.
     candidate_path = args.candidate or "output/candidate_pairs.tsv"
 
+    # Auto-resolve test_dir if default path is not found in CWD
+    test_dir = args.test_dir
+    if not os.path.isfile(os.path.join(test_dir, "test_source1.tsv")):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        candidates = [
+            os.path.join("student_resource", "dataset", "test"),
+            os.path.join(script_dir, "..", "..", "student_resource", "dataset", "test"),
+            os.path.join(script_dir, "..", "dataset", "test"),
+        ]
+        for c in candidates:
+            if os.path.isfile(os.path.join(c, "test_source1.tsv")):
+                test_dir = c
+                break
+
+    # Auto-resolve matching_path if default path is not found in CWD
+    matching_path = args.matching
+    if not os.path.isfile(matching_path):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        candidates = [
+            os.path.join("student_resource", matching_path),
+            os.path.join(script_dir, "..", "output", "matching_results.tsv"),
+            os.path.join(script_dir, "..", "..", "student_resource", "output", "matching_results.tsv"),
+        ]
+        for c in candidates:
+            if os.path.isfile(c):
+                matching_path = c
+                break
+
+    # Auto-resolve candidate_path if default path is not found in CWD
+    if not os.path.isfile(candidate_path):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        candidates = [
+            os.path.join("student_resource", candidate_path),
+            os.path.join(script_dir, "..", "output", "candidate_pairs.tsv"),
+            os.path.join(script_dir, "..", "..", "student_resource", "output", "candidate_pairs.tsv"),
+        ]
+        for c in candidates:
+            if os.path.isfile(c):
+                candidate_path = c
+                break
+
     print("ML Challenge 2026 — submission validator")
-    print(f"  test dir: {args.test_dir}")
+    print(f"  test dir: {test_dir}")
     try:
         errors, warnings = validate(
-            args.matching, candidate_path, args.test_dir, check_ids=args.check_ids
+            matching_path, candidate_path, test_dir, check_ids=args.check_ids
         )
     except UnicodeDecodeError:
         print()
